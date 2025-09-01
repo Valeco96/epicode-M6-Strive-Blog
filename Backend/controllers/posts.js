@@ -16,10 +16,28 @@ export async function createPost(request, response) {
   try {
     const { titolo, descrizione, readTime, autore, categoria, cover } =
       request.body;
+
+    titolo = titolo?.trim();
+    descrizione = descrizione?.trim();
+    autore = autore?.trim();
+    categoria = categoria?.trim();
+    cover = cover?.trim();
+    readTime = {
+      value: readTime?.value?.trim(),
+      unit: readTime?.unit?.trim(),
+    };
+
     if (!titolo || !descrizione || !autore || !categoria || !cover) {
       return response
         .status(400)
         .json({ message: "I campi non compilati sono obbligatori" });
+    }
+
+    if (descrizione.lenght < 20) {
+      return response.status(400).json({
+        message:
+          "La descrizione deve avere una lunghezza non inferiore a 20 caratteri",
+      });
     }
     const newPost = Post({
       titolo,
@@ -64,6 +82,17 @@ export async function editPost(request, response) {
     }
     const { titolo, descrizione, timeRead, autore, categoria, cover } =
       request.body;
+
+    titolo = titolo?.trim();
+    descrizione = descrizione?.trim();
+    autore = autore?.trim();
+    categoria = categoria?.trim();
+    cover = cover?.trim();
+    readTime = {
+      value: readTime?.value?.trim(),
+      unit: readTime?.unit?.trim(),
+    };
+
     if (!titolo || !descrizione || !autore || !categoria || !cover) {
       return response
         .status(400)

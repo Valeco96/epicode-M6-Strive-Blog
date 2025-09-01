@@ -43,7 +43,7 @@ export async function get(request, response) {
     }
     const author = await Author.findById(id);
     if (!author) {
-      return response.status(404).json({ message: "Authore non trovato" });
+      return response.status(404).json({ message: "Autore non trovato" });
     }
     response.status(200).json(author);
   } catch (error) {

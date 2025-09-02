@@ -17,7 +17,7 @@ export async function createPost(request, response) {
     const { titolo, descrizione, readTime, autore, categoria, cover } =
       request.body;
 
-    titolo = titolo?.trim();
+    titolo = titolo?.trim().toLowerCase();
     descrizione = descrizione?.trim();
     autore = autore?.trim();
     categoria = categoria?.trim();
@@ -83,7 +83,7 @@ export async function editPost(request, response) {
     const { titolo, descrizione, timeRead, autore, categoria, cover } =
       request.body;
 
-    titolo = titolo?.trim();
+    titolo = titolo?.trim().toLowerCase();
     descrizione = descrizione?.trim();
     autore = autore?.trim();
     categoria = categoria?.trim();

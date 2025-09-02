@@ -12,17 +12,21 @@ function Homepage() {
 
   async function getPosts() {
     const resultPost = await getAllPosts();
-    setPosts(resultPost);
+    setPosts(resultPost.data);
   }
 
   return (
     <Container>
       <Row>
-        {posts.map((post) => (
-          <Col key={post._id}>
-            <SinglePost post={post} />
-          </Col>
-        ))}
+        {posts && (
+          <>
+            {posts.map((post) => (
+              <Col key={post._id}>
+                <SinglePost post={post} />
+              </Col>
+            ))}
+          </>
+        )}
       </Row>
     </Container>
   );

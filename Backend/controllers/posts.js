@@ -23,7 +23,7 @@ export async function createPost(request, response) {
     categoria = categoria?.trim();
     cover = cover?.trim();
     readTime = {
-      value: readTime?.value?.trim(),
+      value: readTime?.value,
       unit: readTime?.unit?.trim(),
     };
 
@@ -50,9 +50,10 @@ export async function createPost(request, response) {
     const postSaved = await newPost.save();
     response.status(201).json(postSaved);
   } catch (error) {
-    response
-      .status(500)
-      .json({ message: "Errore nella generazione del nuovo post", error });
+    response.status(500).json({
+      message: "Errore nella generazione del nuovo post",
+      error: error.message,
+    });
   }
 }
 
@@ -89,7 +90,7 @@ export async function editPost(request, response) {
     categoria = categoria?.trim();
     cover = cover?.trim();
     readTime = {
-      value: readTime?.value?.trim(),
+      value: readTime?.value,
       unit: readTime?.unit?.trim(),
     };
 

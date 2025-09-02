@@ -1,26 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getSinglePost } from "../data/post";
+import SinglePost from "../components/SinglePost";
 
 function PostDetails() {
-  const { id } = useParams();
+
+  const { postId } = useParams();
 
   const [singlePost, setSinglePost] = useState();
 
   useEffect(() => {
     getPost();
-  }, [id]);
+  }, [postId]);
 
   async function getPost() {
-    const singlePostresults = await getSinglePost(id);
+    const singlePostresults = await getSinglePost(postId);
     setSinglePost(singlePostresults);
   }
 
-  return (
-    <>
-      <SinglePost post={singlePost} />
-    </>
-  );
+  return <>{singlePost && <SinglePost post={singlePost} withLinks />}</>;
 }
 
 export default PostDetails();

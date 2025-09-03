@@ -17,38 +17,52 @@ export async function createPost(request, response) {
     const { titolo, descrizione, readTime, autore, categoria, cover } =
       request.body;
 
-    titolo = titolo?.trim().toLowerCase();
-    descrizione = descrizione?.trim();
-    autore = autore?.trim();
-    categoria = categoria?.trim();
-    cover = cover?.trim();
-    readTime = {
+    const titoloClean = titolo?.trim().toLowerCase();
+    const descrizioneClean = descrizione?.trim();
+    const autoreClean = autore?.trim();
+    const categoriaClean = categoria?.trim();
+    const coverClean = cover?.trim();
+    const readTimeClean = {
       value: readTime?.value,
       unit: readTime?.unit?.trim(),
     };
 
-    if (!titolo || !descrizione || !autore || !categoria || !cover) {
+    if (
+      !titoloClean ||
+      !descrizioneClean ||
+      !autoreClean ||
+      !categoriaClean ||
+      !coverClean
+    ) {
       return response
         .status(400)
         .json({ message: "I campi non compilati sono obbligatori" });
     }
 
-    if (descrizione.lenght < 20) {
+    if (descrizioneClean.length < 20) {
       return response.status(400).json({
         message:
           "La descrizione deve avere una lunghezza non inferiore a 20 caratteri",
       });
     }
     const newPost = Post({
-      titolo,
-      descrizione,
-      readTime,
-      autore,
-      categoria,
-      cover,
+      titolo: titoloClean,
+      descrizione: descrizioneClean,
+      readTime: readTimeClean,
+      autore: autoreClean,
+      categoria: categoriaClean,
+      cover: coverClean,
     });
     const postSaved = await newPost.save();
     response.status(201).json(postSaved);
+    console.log({
+      titoloClean,
+      descrizioneClean,
+      readTimeClean,
+      autoreClean,
+      categoriaClean,
+      coverClean,
+    });
   } catch (error) {
     response.status(500).json({
       message: "Errore nella generazione del nuovo post",

@@ -4,13 +4,13 @@ import { getSinglePost } from "../data/post";
 import SinglePost from "../components/SinglePost";
 
 function PostDetails() {
-
   const { postId } = useParams();
 
   const [singlePost, setSinglePost] = useState();
 
   useEffect(() => {
     getPost();
+    console.log("Fetching post...");
   }, [postId]);
 
   async function getPost() {
@@ -18,7 +18,9 @@ function PostDetails() {
     setSinglePost(singlePostresults);
   }
 
+  console.log(postId);
+
   return <>{singlePost && <SinglePost post={singlePost} withLinks />}</>;
 }
 
-export default PostDetails();
+export default PostDetails;

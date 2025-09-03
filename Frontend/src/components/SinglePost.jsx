@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function SinglePost({ post, withLinks }) {
   return (
@@ -13,7 +14,9 @@ function SinglePost({ post, withLinks }) {
               <Card.Title>{post.categoria}</Card.Title>
               <Card.Text>{post.autore}</Card.Text>
               <Card.Text>{post.descrizione}</Card.Text>
-              <Card.Text>{post.readTime.value}</Card.Text>
+              <Card.Text>
+                {post.readTime.value} {post.readTime.unit}
+              </Card.Text>
             </Card.Body>
             {!withLinks && (
               <Card.Body>

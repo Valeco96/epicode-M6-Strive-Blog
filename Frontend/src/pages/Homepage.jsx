@@ -30,7 +30,7 @@ function Homepage() {
 
   return (
     <Container className="mt-4">
-      <Row>
+      <Row className="align-items-stretch">
         {posts.length === 0 && <p>Nessun post disponibile</p>}
         {posts.map((post) => (
           <Col key={post._id} sm={12} md={6} lg={4} className="mb-4">

@@ -5,6 +5,7 @@ import BNavbar from "./components/BNavbar";
 import BFooter from "./components/BFooter";
 import Homepage from "./pages/Homepage";
 import PostDetails from "./pages/PostDetails";
+import AddPost from "./pages/AddPost";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <BNavbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/addPost" element={<AddPost />} />
           <Route path="/post/:id" element={<PostDetails />} />
         </Routes>
         <BFooter />

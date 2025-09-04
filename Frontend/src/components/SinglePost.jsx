@@ -1,34 +1,36 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function SinglePost({ post, withLinks }) {
   return (
-    <Row xs={1} md={2} className="g-4">
-      {Array.from({ length: 4 }).map((_, idx) => (
-        <Col key={idx}>
-          <Card>
-            <Card.Img variant="top" src={post.cover} />
-            <Card.Body>
-              <Card.Title>{post.titolo}</Card.Title>
-              <Card.Title>{post.categoria}</Card.Title>
-              <Card.Text>{post.autore}</Card.Text>
-              <Card.Text>{post.descrizione}</Card.Text>
-              <Card.Text>
-                {post.readTime.value} {post.readTime.unit}
-              </Card.Text>
-            </Card.Body>
-            {!withLinks && (
-              <Card.Body>
-                <Card.Link to={`/posts/${post._id}`} as={Link}>
-                  Mostra dettagli del post
-                </Card.Link>
-              </Card.Body>
-            )}
-          </Card>
-        </Col>
-      ))}
-    </Row>
+    <Col>
+      <Card className="h-100">
+        <Card.Img variant="top" src={post.cover} />
+        <Card.Body>
+          <Card.Title>{post.titolo}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted">
+            {post.categoria}
+          </Card.Subtitle>
+          <Card.Text>
+            <strong>Autore:</strong> {post.autore}
+          </Card.Text>
+          <Card.Text>{post.descrizione}</Card.Text>
+          <Card.Text>
+            <em>
+              Tempo di lettura: {post.readTime.value} {post.readTime.unit}
+            </em>
+          </Card.Text>
+        </Card.Body>
+        {!withLinks && (
+          <Card.Body>
+            <Card.Link as={Link} to={`/posts/${post._id}`}>
+              Mostra dettagli del post
+            </Card.Link>
+          </Card.Body>
+        )}
+      </Card>
+    </Col>
   );
 }
 

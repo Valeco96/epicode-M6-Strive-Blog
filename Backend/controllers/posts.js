@@ -27,18 +27,6 @@ export async function createPost(request, response) {
       unit: readTime?.unit?.trim(),
     };
 
-    if (
-      !titoloClean ||
-      !descrizioneClean ||
-      !autoreClean ||
-      !categoriaClean ||
-      !coverClean
-    ) {
-      return response
-        .status(400)
-        .json({ message: "I campi non compilati sono obbligatori" });
-    }
-
     if (descrizioneClean.length < 20) {
       return response.status(400).json({
         message:
@@ -108,11 +96,6 @@ export async function editPost(request, response) {
       unit: readTime?.unit?.trim(),
     };
 
-    if (!titolo || !descrizione || !autore || !categoria || !cover) {
-      return response
-        .status(400)
-        .json({ message: "I campi non compilati sono obbligatori" });
-    }
     const updatedPost = await Post.findByIdAndUpdate(
       id,
       {

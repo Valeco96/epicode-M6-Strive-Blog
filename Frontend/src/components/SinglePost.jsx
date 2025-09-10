@@ -6,7 +6,7 @@ function SinglePost({ post, withLinks }) {
   return (
     <Col>
       <Card className="h-100">
-        <Card.Img variant="top" src={post.cover} />
+        <Card.Img id="card-img" variant="top" src={post.cover} />
         <Card.Body>
           <Card.Title>{post.titolo}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">

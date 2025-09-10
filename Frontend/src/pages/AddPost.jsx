@@ -19,8 +19,9 @@ function AddPost() {
   const handleChange = (e) => {
     if (e.target.name == "value" || e.target.name == "unit") {
       setFormData({
-        ...formData.readTime,
+        ...formData,
         readTime: {
+          ...formData.readTime,
           [e.target.name]: e.target.value,
         },
       });
@@ -37,6 +38,11 @@ function AddPost() {
 
     const result = await createPost(formData);
     console.log(result);
+    if (result) {
+      alert("Post pubblicato con successo!");
+    } else {
+      alert("Errore nella creazione del post.");
+    }
   };
 
   return (
@@ -87,7 +93,7 @@ function AddPost() {
         <Form.Control
           type="number"
           name="value"
-          value={formData.value}
+          value={formData.readTime.value}
           onChange={handleChange}
         />
       </Form.Group>
@@ -95,7 +101,7 @@ function AddPost() {
         <Form.Label>Tempo in minuti/ore:</Form.Label>
         <Form.Control
           name="unit"
-          value={formData.unit}
+          value={formData.readTime.unit}
           onChange={handleChange}
         />
       </Form.Group>

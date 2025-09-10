@@ -1,20 +1,30 @@
 import Post from "../models/Post.js";
 
 export async function validatePost(request, response, next) {
-  const { titolo, descrizione, readTime, autore, categoria, cover } =
+  let { titolo, descrizione, readTime, autore, categoria, cover } =
     request.body;
+
+  const titoloClean = titolo?.trim().toLowerCase();
+
   const { id } = request.params;
+
   if (!titolo || !descrizione || !autore || !categoria || !cover) {
     return response
       .status(400)
       .json({ message: "I campi non compilati sono obbligatori" });
   }
 
-  const filter = { $and: [{ titolo }] };
+  console.log("🛠 Validating post...");
+  console.log("Request body:", request.body);
+  console.log("Post ID:", id);
+
+  const filter = { $and: [{ titolo: titoloClean }] };
   if (id) {
-    //eseguiamo una PUT
+    //se é PUT, esclude il post corrente
     filter.$and.push({ _id: { $ne: id } });
   }
+
+  console.log("Filtro duplicati:", JSON.stringify(filter, null, 2));
 
   const Posts = await Post.find(filter);
   if (Posts.length > 0) {

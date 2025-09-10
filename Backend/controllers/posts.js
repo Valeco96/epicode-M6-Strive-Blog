@@ -17,7 +17,7 @@ export async function createPost(request, response) {
     const { titolo, descrizione, readTime, autore, categoria, cover } =
       request.body;
 
-    const titoloClean = titolo?.trim().toLowerCase();
+    const titoloClean = titolo?.trim();
     const descrizioneClean = descrizione?.trim();
     const autoreClean = autore?.trim();
     const categoriaClean = categoria?.trim();
@@ -83,15 +83,15 @@ export async function editPost(request, response) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return response.status(400).json({ message: "L'id non e' valido" });
     }
-    const { titolo, descrizione, timeRead, autore, categoria, cover } =
+    let { titolo, descrizione, readTime, autore, categoria, cover } =
       request.body;
 
-    titolo = titolo?.trim().toLowerCase();
-    descrizione = descrizione?.trim();
-    autore = autore?.trim();
-    categoria = categoria?.trim();
-    cover = cover?.trim();
-    readTime = {
+    const titoloClean = titolo?.trim();
+    const descrizioneClean = descrizione?.trim();
+    const autoreClean = autore?.trim();
+    const categoriaClean = categoria?.trim();
+    const coverClean = cover?.trim();
+    const readTimeClean = {
       value: readTime?.value,
       unit: readTime?.unit?.trim(),
     };
@@ -99,14 +99,14 @@ export async function editPost(request, response) {
     const updatedPost = await Post.findByIdAndUpdate(
       id,
       {
-        titolo,
-        descrizione,
-        readTime,
-        autore,
-        categoria,
-        cover,
+        titolo: titoloClean,
+        descrizione: descrizioneClean,
+        readTime: readTimeClean,
+        autore: autoreClean,
+        categoria: categoriaClean,
+        cover: coverClean,
       },
-      { new: true }
+      { new: true, runValidators: true } //serve a far rispettare lo schema Mongoose anche nella PUT
     );
     if (!updatedPost) {
       return response.status(400).json({ message: "Post non trovato" });

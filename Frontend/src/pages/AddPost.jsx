@@ -1,20 +1,49 @@
 import Form from "react-bootstrap/Form";
 import { createPost } from "../data/post";
 import { Button } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useParams } from "react";
 
 function AddPost() {
+  //const { id } = useParams;
+  // isEdited = !!id;
+
   const [formData, setFormData] = useState({
     titolo: "",
     categoria: "",
     autore: "",
     descrizione: "",
-    cover: "",
     readTime: {
       value: "",
       unit: "",
     },
   });
+
+  //const fetchPost = async () => {
+  //try {
+  //const post = await axios.get(`/posts/${id}`);
+  //console.log("Stiamo modificando:", post);
+  //setFormData({ autore: post.data.autore, ...post.data });
+  //} catch (error) {
+  //  console.log("Errore nell'identificazione del post da modificare", error);
+  //}
+  //};
+  //useEffect(() => {
+  //if (isEdited && id) {
+  //fetchPost();
+  //} else {
+  //setFormData({
+  //titolo: "",
+  // categoria: "",
+  // autore: "",
+  // descrizione: "",
+  // readTime: {
+  // value: "",
+  // unit: "",
+  //  },
+  // }),
+  //   [isEdited, id];
+  //  }
+  //});
 
   const handleChange = (e) => {
     if (e.target.name == "value" || e.target.name == "unit") {
@@ -43,6 +72,12 @@ function AddPost() {
     } else {
       alert("Errore nella creazione del post.");
     }
+  };
+
+  const [cover, setCover] = useState();
+
+  const addCover = (e) => {
+    setCover(e.target.files[0]);
   };
 
   return (
@@ -84,8 +119,9 @@ function AddPost() {
         <Form.Label>Copertina del blog:</Form.Label>
         <Form.Control
           name="cover"
+          type="file"
           value={formData.cover}
-          onChange={handleChange}
+          onChange={addCover}
         />
       </Form.Group>
       <Form.Group className="mb-3">

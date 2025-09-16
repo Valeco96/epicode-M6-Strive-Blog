@@ -1,14 +1,13 @@
 import Post from "../models/Post.js";
 
 export async function validatePost(request, response, next) {
-  let { titolo, descrizione, readTime, autore, categoria, cover } =
-    request.body;
+  let { titolo, descrizione, readTime, autore, categoria } = request.body;
 
   const titoloClean = titolo?.trim().toLowerCase();
 
   const { id } = request.params;
 
-  if (!titolo || !descrizione || !autore || !categoria || !cover) {
+  if (!titolo || !descrizione || !autore || !categoria) {
     return response
       .status(400)
       .json({ message: "I campi non compilati sono obbligatori" });

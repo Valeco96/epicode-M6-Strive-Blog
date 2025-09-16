@@ -105,3 +105,82 @@ export async function remove(request, response) {
       .json({ message: "Errore nell'eliminazione dell'autore", error });
   }
 }
+
+export async function addAvatar(request, response) {
+  try {
+    console.log("Files body:", request.body);
+    console.log("File ricevuto:", request.file);
+
+    const { id } = request.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return response.status(400).json({ message: "L'id non e' valido" });
+    }
+
+    //Estraggo i dati da Cloudinary restituiti da multer-storage-cloudinary
+    const avatarPath = request.file.path; //secure_url
+    const avatarPublicId = request.file.filename; //public_id
+
+    const autore = await Author.findById(id);
+    if (!autore) {
+      return response.status(404).json({ message: "Utente non trovato." });
+    }
+
+    //se aveva un avatar precedente lo elimino da cloudinary
+    if (autore.avatarPublicId) {
+      await cloudinary.uploader.destroy(autore.avatarPublicId);
+    }
+
+    //aggiorno i campi nel database
+    autore.avatar = avatarPath;
+    autore.avatarPublicId = avatarPublicId;
+    await autore.save();
+
+    response.status(200).json(autore);
+  } catch (error) {
+    response.status(500).json({
+      message: "Errore nel caricamento dell'immagine dell'autore",
+      error,
+    });
+  }
+}
+
+export async function removeAvatar(request, response) {
+  try {
+    //trova l'autore nel database
+    const { id } = request.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return response.status(400).json({ message: "L'id non e' valido" });
+    }
+
+    const autore = await Author.findById(id);
+    if (!autore) {
+      return response.status(404).json({ message: "Utente non trovato." });
+    }
+
+    //se ha un publicId (immagine giá esistente su cloudinary) la elimina
+    if (autore.avatarPublicId) {
+      await cloudinary.uploader.destroy(autore.avatarPublicId);
+    }
+
+    //Reset ai valori di default
+    autore.avatar =
+      "https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg";
+    autore.avatarPublicId = null;
+
+    await autore.save();
+
+    response
+      .status(200)
+      .json({ message: "L'eliminazione dell'avatar é avvenuta con successo!" });
+  } catch (error) {
+    response
+      .status(500)
+      .json({
+        message:
+          "Qualcosa é andato storto nell'eliminazione dell'avatar, riprovare",
+        error,
+      });
+  }
+}

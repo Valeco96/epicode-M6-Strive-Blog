@@ -136,3 +136,30 @@ export async function deletePost(request, response) {
       .json({ message: "Non e' stato possibile eliminare il post" });
   }
 }
+
+export async function addNewCover(request, response) {
+  try {
+    console.log("File ricevuto da multer:", request.file);
+    const filePath = request.file.path;
+    const { id } = request.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return response.status(400).json({ message: "L'id non e' valido" });
+    }
+
+    const post = await Post.findByIdAndUpdate(
+      id,
+      { cover: filePath },
+      { new: true }
+    );
+    if (!post) {
+      return response.status(404).json({ message: "Post non trovato." });
+    }
+    response.status(200).json(post);
+  } catch (error) {
+    response.status(500).json({
+      message: "Errore nel caricamento dell'immagine come cover",
+      error,
+    });
+  }
+}

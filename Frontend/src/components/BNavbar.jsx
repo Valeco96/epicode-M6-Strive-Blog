@@ -17,7 +17,9 @@ function BNavbar() {
             <Nav.Link to="/addPost" as={Link}>
               Crea post
             </Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
+            <Nav.Link to="/AuthorForm" as={Link}>
+              Autore
+            </Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

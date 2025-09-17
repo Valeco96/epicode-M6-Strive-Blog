@@ -140,13 +140,20 @@ export async function deletePost(request, response) {
 export async function addNewCover(request, response) {
   try {
     console.log("File ricevuto da multer:", request.file);
-    const filePath = request.file.path;
+    
     const { id } = request.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return response.status(400).json({ message: "L'id non e' valido" });
     }
 
+    if (!request.file) {
+      return response.status(400).json({message: "Nessun file caricato."})
+    }
+
+    const coverPath = request.file.path;  // path restituito da Cloudinary
+    const coverPublicId = request.file.filename; //Cloudinary salva qui il public._id
+ 
     const post = await Post.findByIdAndUpdate(
       id,
       { cover: filePath },

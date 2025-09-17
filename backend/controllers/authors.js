@@ -59,7 +59,7 @@ export async function put(request, response) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return response.status(400).json({ message: "L'id non e' valido" });
     }
-    const { nome, cognome, email, dataDiNascita, avatar } = request.body;
+    const { nome, cognome, email, dataDiNascita } = request.body;
     if (!nome || !cognome || !email || !dataDiNascita) {
       return response
         .status(400)
@@ -72,7 +72,6 @@ export async function put(request, response) {
         cognome,
         email,
         dataDiNascita,
-        avatar,
       },
       { new: true }
     );
@@ -85,6 +84,35 @@ export async function put(request, response) {
       message: "Errore nell'aggiornamento dei dati dell'autore",
       error,
     });
+  }
+}
+
+export async function patch(request, response) {
+  try {
+    const { id } = request.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return response.status(400).json({ message: "L'id non e' valido" });
+    }
+
+    //in request body ci sono i parametri da modificare
+    const updates = request.body;
+
+    const updatedAuthor = await Author.findByIdAndUpdate(
+      id,
+      {
+        $set: updates, //aggiorna solo i campi specificati
+      },
+      { new: true }
+    );
+    if (!updatedAuthor) {
+      return response.status(400).json({ message: "Autore non trovato" });
+    }
+    
+    response.status(200).json(updatedAuthor);
+  } catch (error) {
+    response
+      .status(500)
+      .json({ message: "Errore nell'inserimento dei nuovi dati." });
   }
 }
 
@@ -175,12 +203,10 @@ export async function removeAvatar(request, response) {
       .status(200)
       .json({ message: "L'eliminazione dell'avatar é avvenuta con successo!" });
   } catch (error) {
-    response
-      .status(500)
-      .json({
-        message:
-          "Qualcosa é andato storto nell'eliminazione dell'avatar, riprovare",
-        error,
-      });
+    response.status(500).json({
+      message:
+        "Qualcosa é andato storto nell'eliminazione dell'avatar, riprovare",
+      error,
+    });
   }
 }

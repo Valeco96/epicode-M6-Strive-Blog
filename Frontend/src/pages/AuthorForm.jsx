@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-export default function AuthorForm({ authorId, token }) {
+export default function AuthorForm({ token }) {
+  const { id } = useParams(); //id dell'autore quando lo riceviamo
+  const authorId = id; // lo passiamo alla logica del form
+
   //Stato dei campi
-  const [nome, setNome] = useState();
-  const [cognome, setCognome] = useState();
-  const [email, setEmail] = useState();
-  const [dataDiNascita, setDataDiNascita] = useState();
-  const [avatar, setAvatar] = useState(); //URL dell'immagine attuale
-  const [avatarFile, setAvatarFile] = useState(); //file selezionato
-  const [message, setMessage] = useState();
+  const [nome, setNome] = useState("");
+  const [cognome, setCognome] = useState("");
+  const [email, setEmail] = useState("");
+  const [dataDiNascita, setDataDiNascita] = useState("");
+  const [avatar, setAvatar] = useState(""); //URL dell'immagine attuale
+  const [avatarFile, setAvatarFile] = useState(null); //file selezionato
+  const [message, setMessage] = useState("");
 
   //se authorId é presente, carica i dati esistenti
   useEffect(() => {
@@ -33,9 +37,9 @@ export default function AuthorForm({ authorId, token }) {
   //Gestione dell'upload dell'avatar
   const handleAvatarChange = (e) => {
     setAvatarFile(e.target.files[0]);
+    //Anteprima
+    setAvatar(URL.createObjectURL(e.target.files[0]));
   };
-  //Anteprima
-  setAvatar(URL.createObjectURL(e.target.files[0]));
 
   // Creazione o aggiornamento autore
   const handleSubmit = async (e) => {
@@ -46,15 +50,22 @@ export default function AuthorForm({ authorId, token }) {
 
       if (!authorId) {
         // Creazione nuovo autore
-        response = await fetch("/authors", {
+        response = await fetch("http://localhost:4000/authors", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ nome, cognome, email, dataDiNascita }),
         });
-        data = await res.json();
+        if (!response.ok) {
+          // Qui provo a leggere il messaggio di errore
+          const errorText = await response.text();
+          throw new Error(errorText || "Errore nella richiesta");
+        }
+
+        data = await response.json();
+        console.log("Autore creato", data);
       } else {
         // Aggiornamento dati (senza avatar)
-        response = await fetch(`/authors/${authorId}`, {
+        response = await fetch(`http://localhost:4000/authors/${authorId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -62,21 +73,29 @@ export default function AuthorForm({ authorId, token }) {
           },
           body: JSON.stringify({ nome, cognome, email, dataDiNascita }),
         });
-        data = await res.json();
+        data = await response.json();
       }
 
       setMessage("Dati salvati con successo!");
 
       // Se c'è un file avatar selezionato, aggiorna avatar
-      if (avatarFile) {
+      if (avatarFile && data._id) {
         const formData = new FormData();
         formData.append("avatar", avatarFile);
 
-        const avatarRes = await fetch(`/authors/${data._id}/avatar`, {
-          method: "PATCH",
-          body: formData,
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const avatarRes = await fetch(
+          `http://localhost:4000/authors/${data._id}/avatar`,
+          {
+            method: "PATCH",
+            body: formData,
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || "Errore durante l'aggiornamento");
+        }
+
         const avatarData = await avatarRes.json();
         setAvatar(avatarData.avatar);
         setMessage("Avatar aggiornato con successo!");

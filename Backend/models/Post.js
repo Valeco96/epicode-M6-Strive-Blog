@@ -10,10 +10,14 @@ const postScheme = new Schema(
     },
     autore: { type: String, required: true },
     categoria: { type: String, required: true },
-    cover: {
+    cover: {  //URL dell'immagine
       type: String,
       default:
         "https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg",
+    },
+    coverPublicId: { //Id di Cloudinary per eventuale eliminazione
+      type: String,
+      default: null,
     },
   },
   { timestamps: true }

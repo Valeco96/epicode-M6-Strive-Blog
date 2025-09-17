@@ -7,6 +7,7 @@ import {
   remove,
   addAvatar,
   removeAvatar,
+  patch,
 } from "../controllers/authors.js";
 import uploadCloudinary from "../middlewares/uploadCloudinary.js";
 
@@ -16,6 +17,7 @@ authorsRouter.get("/", getAll);
 authorsRouter.post("/", create);
 authorsRouter.get("/:id", get);
 authorsRouter.put("/:id", put);
+authorsRouter.patch("/:id", patch)
 authorsRouter.patch(
   "/:id/avatar",
   uploadCloudinary.single("avatar"),
@@ -23,7 +25,6 @@ authorsRouter.patch(
 );
 authorsRouter.patch(
   "/:id/avatar/remove",
-  uploadCloudinary.single("avatar"),
   removeAvatar
 );
 authorsRouter.delete("/:id", remove);

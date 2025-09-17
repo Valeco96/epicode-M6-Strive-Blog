@@ -140,7 +140,7 @@ export async function deletePost(request, response) {
 export async function addNewCover(request, response) {
   try {
     console.log("File ricevuto da multer:", request.file);
-    
+
     const { id } = request.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -148,21 +148,21 @@ export async function addNewCover(request, response) {
     }
 
     if (!request.file) {
-      return response.status(400).json({message: "Nessun file caricato."})
+      return response.status(400).json({ message: "Nessun file caricato." });
     }
 
-    const coverPath = request.file.path;  // path restituito da Cloudinary
-    const coverPublicId = request.file.filename; //Cloudinary salva qui il public._id
- 
-    const post = await Post.findByIdAndUpdate(
+    const coverPath = request.file.path; // path restituito da Cloudinary
+    const publicId = request.file.filename; //Cloudinary salva qui il public._id
+
+    const updatedPost = await Post.findByIdAndUpdate(
       id,
-      { cover: filePath },
+      { cover: coverPath, coverPublicId: publicId },
       { new: true }
     );
-    if (!post) {
+    if (!updatedPost) {
       return response.status(404).json({ message: "Post non trovato." });
     }
-    response.status(200).json(post);
+    response.status(200).json(updatedPost);
   } catch (error) {
     response.status(500).json({
       message: "Errore nel caricamento dell'immagine come cover",

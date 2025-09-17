@@ -5,7 +5,7 @@ import BNavbar from "./components/BNavbar";
 import BFooter from "./components/BFooter";
 import Homepage from "./pages/Homepage";
 import PostDetails from "./pages/PostDetails";
-import AddPost from "./pages/AddPost";
+import PostForm from "./pages/PostForm";
 import AuthorForm from "./pages/AuthorForm";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
           <Route path="/AuthorForm" element={<AuthorForm />} />
           {/*Modifica di un autore esistente - PATCH */}
           <Route path="/AuthorForm/:id" element={<AuthorForm />} />
-          <Route path="/addPost" element={<AddPost />} />
+          <Route path="/PostForm" element={<PostForm />} />
           <Route path="/post/:id" element={<PostDetails />} />
         </Routes>
         <BFooter />

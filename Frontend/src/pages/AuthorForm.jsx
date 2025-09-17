@@ -17,7 +17,7 @@ export default function AuthorForm({ token }) {
   //se authorId é presente, carica i dati esistenti
   useEffect(() => {
     if (authorId) {
-      const response = fetch(`/authors/${authorId}`, {
+      const response = fetch(`http://localhost:4000/authors/${authorId}`, {
         header: {
           Authorization: `Bearer ${token}`,
         },

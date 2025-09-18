@@ -7,6 +7,7 @@ import authorsRouter from "./routes/authors.js";
 import postsRouter from "./routes/posts.js";
 import globalErrors from "./middlewares/globalErrors.js";
 import { v2 as cloudinary } from "cloudinary";
+import commentsRouter from "./routes/comments.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -26,6 +27,7 @@ server.get("/api", (request, response) => response.send({ username: "gigi" }));
 //rotte
 server.use("/authors", authorsRouter);
 server.use("/posts", postsRouter);
+server.use("/posts", commentsRouter);
 //middleware per gestione globale degli errori
 server.use(globalErrors);
 

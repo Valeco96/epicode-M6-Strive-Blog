@@ -3,7 +3,6 @@ import { Schema } from "mongoose";
 const commentScheme = new Schema(
   {
     testo: { type: String, required: true },
-    data: { type: Date, default: Date.now },
     autore: {
       type: Schema.Types.ObjectId,
       ref: "Author",
@@ -11,3 +10,5 @@ const commentScheme = new Schema(
   },
   { timestamps: true }
 );
+
+export default commentScheme;

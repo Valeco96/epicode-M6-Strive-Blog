@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import commentScheme from "./Comment.js";
 
 const postScheme = new Schema(
   {
@@ -19,6 +20,9 @@ const postScheme = new Schema(
       type: String,
       default: null,
     },
+    comments: [
+      commentScheme,
+    ]
   },
   { timestamps: true }
 );

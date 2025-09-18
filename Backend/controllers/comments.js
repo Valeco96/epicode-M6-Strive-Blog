@@ -42,10 +42,10 @@ export async function createComments(request, response) {
   }
   //Ora dobbiamo inserire il nuovo commento
   const newComment = { testo, autore };
-  post.comments.push(newComment);
-  await post.save();
+  request.post.comments.push(newComment);
+  await request.post.save();
 
-  response.status(201).json(newComment);
+  response.status(201).json(request.post.comments);
 }
 
 export async function getSingleComment(request, response) {

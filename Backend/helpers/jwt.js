@@ -1,0 +1,1 @@
+//Creiamo una funzione che firma il JWT token usando un secret che abbiamo definito nell'ENV.

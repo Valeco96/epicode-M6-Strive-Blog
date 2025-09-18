@@ -14,13 +14,13 @@ export async function getAll(request, response) {
 
 export async function create(request, response) {
   try {
-    const { nome, cognome, email, dataDiNascita, avatar } = request.body;
-    if (!nome || !cognome || !email || !dataDiNascita) {
+    const { nome, cognome, email, dataDiNascita, avatar, password } = request.body;
+    if (!nome || !cognome || !email || !dataDiNascita || !password) {
       return response
         .status(400)
         .json({ message: "I campi non compilati sono obbligatori" });
     }
-    const newAuthor = Author({ nome, cognome, email, dataDiNascita, avatar });
+    const newAuthor = Author({ nome, cognome, email, dataDiNascita, avatar, password });
     const authorSaved = await newAuthor.save();
     response.status(201).json(authorSaved);
   } catch (error) {

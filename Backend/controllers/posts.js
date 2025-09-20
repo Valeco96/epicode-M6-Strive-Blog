@@ -3,7 +3,14 @@ import Post from "../models/Post.js";
 
 export async function getAllPosts(request, response) {
   try {
-    const posts = await Post.find();
+    const search = request.query;
+
+    let filter = {};
+    if (search) {
+      filter = { titolo: { $regex: search, $option: "i" } };
+    }
+
+    const posts = await Post.find().populate("autore");
     response.status(200).json(posts);
   } catch (error) {
     response
@@ -14,12 +21,10 @@ export async function getAllPosts(request, response) {
 
 export async function createPost(request, response) {
   try {
-    const { titolo, descrizione, readTime, autore, categoria, cover } =
-      request.body;
+    const { titolo, descrizione, readTime, categoria, cover } = request.body;
 
     const titoloClean = titolo?.trim();
     const descrizioneClean = descrizione?.trim();
-    const autoreClean = autore?.trim();
     const categoriaClean = categoria?.trim();
     const coverClean = cover?.trim();
     const readTimeClean = {
@@ -37,7 +42,7 @@ export async function createPost(request, response) {
       titolo: titoloClean,
       descrizione: descrizioneClean,
       readTime: readTimeClean,
-      autore: autoreClean,
+      autore: request.autore._id,
       categoria: categoriaClean,
       cover: coverClean,
     });
@@ -47,7 +52,7 @@ export async function createPost(request, response) {
       titoloClean,
       descrizioneClean,
       readTimeClean,
-      autoreClean,
+      autore,
       categoriaClean,
       coverClean,
     });
@@ -83,12 +88,10 @@ export async function editPost(request, response) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return response.status(400).json({ message: "L'id non e' valido" });
     }
-    let { titolo, descrizione, readTime, autore, categoria, cover } =
-      request.body;
+    let { titolo, descrizione, readTime, categoria, cover } = request.body;
 
     const titoloClean = titolo?.trim();
     const descrizioneClean = descrizione?.trim();
-    const autoreClean = autore?.trim();
     const categoriaClean = categoria?.trim();
     const coverClean = cover?.trim();
     const readTimeClean = {
@@ -102,7 +105,6 @@ export async function editPost(request, response) {
         titolo: titoloClean,
         descrizione: descrizioneClean,
         readTime: readTimeClean,
-        autore: autoreClean,
         categoria: categoriaClean,
         cover: coverClean,
       },

@@ -9,20 +9,20 @@ const postScheme = new Schema(
       value: { type: Number, required: true },
       unit: { type: String, required: true },
     },
-    autore: { type: String, required: true },
+    autore: { type: Schema.Types.ObjectId, ref: "Author", required: true },
     categoria: { type: String, required: true },
-    cover: {  //URL dell'immagine
+    cover: {
+      //URL dell'immagine
       type: String,
       default:
         "https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg",
     },
-    coverPublicId: { //Id di Cloudinary per eventuale eliminazione
+    coverPublicId: {
+      //Id di Cloudinary per eventuale eliminazione
       type: String,
       default: null,
     },
-    comments: [
-      commentScheme,
-    ]
+    comments: [commentScheme],
   },
   { timestamps: true }
 );

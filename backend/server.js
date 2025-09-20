@@ -8,6 +8,8 @@ import postsRouter from "./routes/posts.js";
 import globalErrors from "./middlewares/globalErrors.js";
 import { v2 as cloudinary } from "cloudinary";
 import commentsRouter from "./routes/comments.js";
+import authRouter from "./routes/auth.js";
+import { authVerifyAuthor } from "./middlewares/authVerifyAuthor.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -22,12 +24,11 @@ server.use(cors());
 server.use(morgan("tiny"));
 server.use(express.json());
 
-server.get("/api", (request, response) => response.send({ username: "gigi" }));
-
 //rotte
-server.use("/authors", authorsRouter);
-server.use("/posts", postsRouter);
-server.use("/posts", commentsRouter);
+server.use("/auth", authRouter);
+server.use("/authors", authVerifyAuthor, authorsRouter);
+server.use("/posts", authVerifyAuthor, postsRouter);
+server.use("/posts", authVerifyAuthor, commentsRouter);
 //middleware per gestione globale degli errori
 server.use(globalErrors);
 

@@ -20,7 +20,7 @@ export async function getAllComments(request, response) {
 
 export async function createComments(request, response) {
   //prendiamo i dati del post dal body della request
-  const { testo, autore } = request.body;
+  const { testo } = request.body;
   const { id } = request.params;
   if (!mongoose.Types.ObjectId.isValid(autore)) {
     return response
@@ -31,17 +31,18 @@ export async function createComments(request, response) {
     return response.status(400).json({ message: "L'id non e' valido" });
   }
   // selezionare l'autore e validare se esiste
-  const autoreBD = await Author.findById(autore);
-  if (!autore) {
-    return response.status(404).json({ message: "Autore non trovato." });
-  }
+  //const autoreBD = await Author.findById(autore);
+  //if (!autore) {
+  //return response.status(404).json({ message: "Autore non trovato." });
+  //}
   //selezionare il post e validare se esiste
   const post = await Post.findById(id);
   if (!post) {
     return response.status(404).json({ message: "Post non trovato." });
   }
   //Ora dobbiamo inserire il nuovo commento
-  const newComment = { testo, autore };
+  const newComment = { testo, autore: request.autore._id };
+  console.log(request.autore._id);
   request.post.comments.push(newComment);
   await request.post.save();
 
@@ -74,7 +75,7 @@ export async function getSingleComment(request, response) {
 
 export async function updateComment(request, response) {
   const { id, commentId } = request.params;
-  const { testo, autore } = request.body;
+  const { testo } = request.body;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return response
       .status(400)
@@ -82,14 +83,6 @@ export async function updateComment(request, response) {
   }
   if (!mongoose.Types.ObjectId.isValid(commentId)) {
     return response.status(400).json({ message: "L'id non e' valido" });
-  }
-  if (!mongoose.Types.ObjectId.isValid(autore)) {
-    return response.status(400).json({ message: "L'id non e' valido" });
-  }
-
-  const autoreBD = await Author.findById(autore);
-  if (!autore) {
-    return response.status(404).json({ message: "Autore non trovato." });
   }
 
   const post = await Post.findById(id);
@@ -105,7 +98,6 @@ export async function updateComment(request, response) {
   comment = {
     ...comment,
     testo,
-    autore,
   };
 
   await post.save();

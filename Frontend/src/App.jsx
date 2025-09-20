@@ -15,6 +15,7 @@ function App() {
         <BNavbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/auth/login" element={<AuthorForm />} />
           {/*Creazione di un nuovo autore - POST */}
           <Route path="/AuthorForm" element={<AuthorForm />} />
           {/*Modifica di un autore esistente - PATCH */}

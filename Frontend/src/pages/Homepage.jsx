@@ -6,6 +6,7 @@ import SinglePost from "../components/SinglePost";
 
 function Homepage() {
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     console.log("Fetching posts...");
@@ -13,11 +14,15 @@ function Homepage() {
 
     async function fetchPosts() {
       try {
-        const postsFromAPI = await getAllPosts();
+        const token = localStorage.getItem("token"); //recupero il token
+
+        const postsFromAPI = await getAllPosts(token); //passo il token, fa il check se il backend lo accetta oppure no
         console.log("Posts fetched from API:", postsFromAPI);
+
         if (isMounted) setPosts(postsFromAPI);
       } catch (error) {
         console.error("Errore nel fetch dei post:", error);
+        setError("Errore nel recupero dei post.");
       }
     }
 
@@ -30,13 +35,18 @@ function Homepage() {
 
   return (
     <Container className="mt-4">
+      {error && <p className="text-danger">{error}</p>}
       <Row className="align-items-stretch">
-        {posts.length === 0 && <p>Nessun post disponibile</p>}
-        {posts.map((post) => (
-          <Col key={post._id} sm={12} md={6} lg={4} className="mb-4">
-            <SinglePost post={post} />
-          </Col>
-        ))}
+        {posts && posts.length === 0 && <p>Nessun post disponibile</p>}
+        {posts &&
+          posts.map((post) => (
+            <Col key={post._id} sm={12} md={6} lg={4} className="mb-4">
+              <SinglePost
+                post={post}
+                canEdit={!!localStorage.getItem("token")} // modifica ed eliminazione post protetta
+              />
+            </Col>
+          ))}
       </Row>
     </Container>
   );

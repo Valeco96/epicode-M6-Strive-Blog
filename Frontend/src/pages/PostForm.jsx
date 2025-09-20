@@ -3,10 +3,11 @@ import { createPost } from "../data/post";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function PostForm({ token }) {
   const { id } = useParams();
-  const postId = id; // se esiste -> PATCH, se non esiste -> POST
+  const isEdited = !!id; // true se stiamo modificando il post
 
   const [formData, setFormData] = useState({
     titolo: "",
@@ -19,11 +20,12 @@ function PostForm({ token }) {
     },
   });
 
-  const [cover, setCover] = useState();
+  const [cover, setCover] = useState(null);
   const [message, setMessage] = useState("");
 
+  //precompilazione dati se stiamo modificando
   useEffect(() => {
-    if (postId) {
+    if (isEdited) {
       const response = fetch(`http://localhost:4000/posts/${postId}`)
         .then((response) => response.json())
         .then((data) => {
@@ -73,7 +75,7 @@ function PostForm({ token }) {
       } else {
         await fetch(`http://localhost:4000/posts/${postId}`, {
           method: "PATCH",
-          header: {
+          headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },

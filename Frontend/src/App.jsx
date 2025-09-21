@@ -6,7 +6,8 @@ import BFooter from "./components/BFooter";
 import Homepage from "./pages/Homepage";
 import PostDetails from "./pages/PostDetails";
 import PostForm from "./pages/PostForm";
-import AuthorForm from "./pages/AuthorForm";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -15,11 +16,12 @@ function App() {
         <BNavbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/auth/login" element={<AuthorForm />} />
+          <Route path="/Register" element={<Register />} />
+          <Route path="/Login" element={<Login />} />
           {/*Creazione di un nuovo autore - POST */}
-          <Route path="/AuthorForm" element={<AuthorForm />} />
+          <Route path="/AuthorForm" element={<Register />} />
           {/*Modifica di un autore esistente - PATCH */}
-          <Route path="/AuthorForm/:id" element={<AuthorForm />} />
+          <Route path="/AuthorForm/:id" element={<Register />} />
           <Route path="/PostForm" element={<PostForm />} />
           <Route path="/post/:id" element={<PostDetails />} />
         </Routes>

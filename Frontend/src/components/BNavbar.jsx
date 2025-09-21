@@ -25,7 +25,7 @@ function BNavbar() {
           <Nav className="me-auto">
             {token && (
               <>
-                <Nav.Link to="/AuthorForm" as={Link}>
+                <Nav.Link>
                   Profilo Autore
                 </Nav.Link>
                 <Nav.Link to="/PostForm" as={Link}>
@@ -36,10 +36,10 @@ function BNavbar() {
             )}
             {!token && (
               <>
-                <Nav.Link to="/login" as={Link}>
+                <Nav.Link to="/Login" as={Link}>
                   Login
                 </Nav.Link>
-                <Nav.Link to="/register" as={Link}>
+                <Nav.Link to="/Register" as={Link}>
                   Registrati
                 </Nav.Link>
               </>

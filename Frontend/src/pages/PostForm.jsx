@@ -1,8 +1,8 @@
 import Form from "react-bootstrap/Form";
-import { createPost } from "../data/post";
+import { createPost, editPost, getSinglePost } from "../data/post";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function PostForm({ token }) {
@@ -22,13 +22,22 @@ function PostForm({ token }) {
 
   const [cover, setCover] = useState(null);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   //precompilazione dati se stiamo modificando
   useEffect(() => {
     if (isEdited) {
-      const response = fetch(`http://localhost:4000/posts/${postId}`)
-        .then((response) => response.json())
-        .then((data) => {
+      const fetchData = async () => {
+        try {
+          const token = localStorage.getItem("token"); //recupero il token
+          const data = await getSinglePost(id, token); //restituisce direttamente response
+          console.log("Post ricevuto:", data);
+
+          if (!data) {
+            console.error("Nessun post trovato.");
+            return;
+          }
+
           setFormData({
             titolo: data.titolo,
             categoria: data.categoria,
@@ -36,10 +45,13 @@ function PostForm({ token }) {
             descrizione: data.descrizione,
             readTime: data.readTime || { value: "", unit: "" },
           });
-        })
-        .catch((error) => console.error(error));
+        } catch (error) {
+          console.error("Errore nel caricamento del post:", error);
+        }
+      };
+      fetchData();
     }
-  }, [postId]);
+  }, [id, isEdited, token]);
 
   const handleChange = (e) => {
     if (e.target.name == "value" || e.target.name == "unit") {
@@ -62,57 +74,51 @@ function PostForm({ token }) {
     e.preventDefault();
 
     try {
-      let response, data;
+      let data;
+      const token = localStorage.getItem("token"); //recupero il token
 
-      if (!postId) {
-        const result = await createPost(formData);
-        console.log(result);
-        if (result) {
-          alert("Post pubblicato con successo!");
-        } else {
-          alert("Errore nella creazione del post.");
-        }
+      if (!isEdited) {
+        const response = await createPost(formData, token);
+        data = response; //assumendo che createPost ritorni response.data
+        console.log("Post creato:", data);
+        alert("Post pubblicato con successo!");
+         navigate("/");
+
+         if (!token) {
+          alert("Solo gli account registrati possono pubblicare un post!");
+         }
       } else {
-        await fetch(`http://localhost:4000/posts/${postId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        });
+        const response = await editPost(id, formData, token); //restituisce direttamente response
+        data = response;
+        console.log("Post modificato:", data);
+        alert("Post modificato con successo!");
+        navigate("/");
       }
-
-      if (!response.ok) {
-        throw new Error("Errore durante il salvataggio del post.");
-      }
-
-      data = await response.json();
-      setMessage("Post salvato con successo");
 
       //Aggiornamento della cover se selezionata
       if (cover) {
         const formCover = new FormData();
         formCover.append("cover", cover);
-      }
 
-      const coverRes = await fetch(
-        `http://localhost:4000/posts/${data._id}/cover`,
-        {
-          method: "PATCH",
-          body: formCover,
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!coverRes.ok)
-        throw new Error("Errore nell'aggiornamento della cover.");
-      const coverData = await coverRes.json();
-      setFormData((prev) => ({ ...prev, cover: coverData.cover }));
-      setMessage("Cover aggiornata con successo");
+        const coverRes = await fetch(
+          `http://localhost:4000/posts/${data._id}/cover`,
+          {
+            method: "PATCH",
+            body: formCover,
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!coverRes.ok)
+          throw new Error("Errore nell'aggiornamento della cover.");
+
+        const coverData = await coverRes.json();
+        setFormData((prev) => ({ ...prev, cover: coverData.cover }));
+        setMessage("Cover aggiornata con successo");
+      }
     } catch (error) {
-      response
-        .status(500)
-        .json({ message: "Errore nel caricamento del post." });
+      console.error("Errore nel caricamento del post:", error);
+      setMessage("Errore nel caricamento del post.");
     }
   };
 
@@ -176,7 +182,7 @@ function PostForm({ token }) {
           onChange={handleChange}
         />
       </Form.Group>
-      <Button type="submit">{postId ? "Aggiorna Post" : "Crea Post"}</Button>
+      <Button type="submit">{isEdited ? "Aggiorna Post" : "Crea Post"}</Button>
       {message && <p>{message}</p>}
     </Form>
   );

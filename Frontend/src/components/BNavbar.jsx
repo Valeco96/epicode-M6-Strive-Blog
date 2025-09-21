@@ -25,9 +25,7 @@ function BNavbar() {
           <Nav className="me-auto">
             {token && (
               <>
-                <Nav.Link>
-                  Profilo Autore
-                </Nav.Link>
+                <Nav.Link>Profilo Autore</Nav.Link>
                 <Nav.Link to="/PostForm" as={Link}>
                   Crea Post
                 </Nav.Link>

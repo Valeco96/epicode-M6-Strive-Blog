@@ -13,10 +13,10 @@ authRouter.get(
 );
 authRouter.get(
   "/callback-google",
-  passport.authenticate("google", { session: false }),
+  passport.authenticate("google", { session: false }), //stiamo usando react, che non usa cookies (gli diciamo di non usarli)
   (request, response) => {
     response.redirect(
-      process.env.FRONTEND_HOST + "/login?jwt" + request.user.jwt
+      process.env.FRONTEND_HOST + "/login?jwt=" + request.autore.jwt
     );
   }
 );

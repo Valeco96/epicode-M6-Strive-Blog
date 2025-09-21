@@ -33,6 +33,10 @@
   }
 }
 
+.logo-wrapper {
+  padding: 20px;
+}
+
 .card {
   padding: 2em;
 }

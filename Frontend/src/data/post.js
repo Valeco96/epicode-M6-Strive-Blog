@@ -1,4 +1,5 @@
 import axios from "./axios.js";
+import api from "./axios.js";
 
 export async function getAllPosts(token) {
   try {
@@ -22,7 +23,8 @@ export async function getSinglePost(id, token) {
     });
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.log("Errore getSinglePost:", err);
+    throw err;
   }
 }
 
@@ -47,7 +49,8 @@ export async function editPost(id, postData, token) {
       },
     });
   } catch (err) {
-    console.error(err);
+    console.error("Errore editPost:", err);
+    throw err;
   }
 }
 

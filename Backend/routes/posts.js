@@ -16,6 +16,7 @@ postsRouter.get("/", getAllPosts);
 postsRouter.post("/", validatePost, createPost);
 postsRouter.get("/:id", getSinglePost);
 postsRouter.put("/:id", validatePost, editPost);
+postsRouter.patch("/:id", validatePost, editPost);
 postsRouter.patch("/:id/cover", uploadCloudinary.single("cover"), addNewCover); // cover é il nome del campo che devo passare
 postsRouter.delete("/:id", deletePost);
 

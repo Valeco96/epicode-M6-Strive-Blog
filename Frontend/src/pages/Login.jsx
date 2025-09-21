@@ -26,11 +26,11 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="py-5">
       <h2>Accedi</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="my-3">
           <label>Email:</label>
           <input
             type="email"
@@ -39,7 +39,7 @@ export default function Login() {
             required
           />
         </div>
-        <div>
+        <div className="my-3">
           <label>Password:</label>
           <input
             type="password"
@@ -52,6 +52,10 @@ export default function Login() {
         <button type="submit" onClick={googleLogin}>
           Login con Google
         </button>
+        <div className="login-footer my-4">
+          <p>Non hai un account?</p>
+          <button onClick={() => navigate("/register")}>Crea un account</button>
+        </div>
       </form>
     </div>
   );

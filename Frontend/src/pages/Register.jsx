@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { register } from "../data/auth";
 
 export default function Register() {
@@ -10,6 +9,7 @@ export default function Register() {
     email: "",
     dataDiNascita: "",
     password: "",
+    avatar: "",
   });
 
   const [avatarFile, setAvatarFile] = useState(null);
@@ -35,19 +35,34 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Creo FormData da inviare al backend
     const formToSend = new FormData();
+
+    //Aggiungo i campi del form
     for (let key in formData) {
       formToSend.append(key, formData[key]);
     }
+
     if (avatarFile) {
-      formToSend.append("avatarFile", avatarFile);
+      formToSend.append("avatar", avatarFile);
     }
+
     try {
-      await register(formToSend);
+      //Chiamo la funzione di axios di registrazione
+      const data = await register(formToSend); //chiamo la funzione axios
+
+      //Messaggio di conferma e navigazione
       setMessage("Registrazione dell'autore completata!");
+      console.log("Dati registrazione:", data);
+
       navigate("/");
     } catch (error) {
-      setMessage("Errore durante la registrazione.");
+      setMessage("Errore durante la registrazione:", error);
+      setMessage(
+        // cattura eventuali messaggi dal backend
+        error.response?.data?.message ||
+          "Errore durante la registrazione. Controlla i campi e riprova."
+      );
     }
   };
 

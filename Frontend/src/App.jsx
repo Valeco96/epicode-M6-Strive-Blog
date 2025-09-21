@@ -23,6 +23,7 @@ function App() {
           {/*Modifica di un autore esistente - PATCH */}
           <Route path="/AuthorForm/:id" element={<Register />} />
           <Route path="/PostForm" element={<PostForm />} />
+          <Route path="/PostForm/:id" element={<PostForm />} />
           <Route path="/post/:id" element={<PostDetails />} />
         </Routes>
         <BFooter />

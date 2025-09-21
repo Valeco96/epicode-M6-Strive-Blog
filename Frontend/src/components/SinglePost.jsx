@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Card, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { deletePost } from "../data/post";
 
 function SinglePost({ post, withLinks, canEdit }) {
   const navigate = useNavigate();
@@ -17,10 +18,10 @@ function SinglePost({ post, withLinks, canEdit }) {
       if (response) {
         alert("Il Post é stato eliminato.");
         window.location.reload(); //ricarica la pagina per aggiornare il post
-        } else {
-          alert("Errore nell'eliminazione del post.")
-        }
-      } catch (error) {
+      } else {
+        alert("Errore nell'eliminazione del post.");
+      }
+    } catch (error) {
       console.error(error);
       alert("Errore nella richiesta di eliminazione del post.");
     }
@@ -41,7 +42,8 @@ function SinglePost({ post, withLinks, canEdit }) {
             {post.categoria}
           </Card.Subtitle>
           <Card.Text>
-            <strong>Autore:</strong> {post.autore}
+            <strong>Autore:</strong> {post.autore.nome} 
+            {post.autore.cognome}
           </Card.Text>
           <Card.Text>{post.descrizione}</Card.Text>
           <Card.Text>

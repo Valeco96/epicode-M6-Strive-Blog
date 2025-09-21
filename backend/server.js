@@ -10,6 +10,8 @@ import { v2 as cloudinary } from "cloudinary";
 import commentsRouter from "./routes/comments.js";
 import authRouter from "./routes/auth.js";
 import { authVerifyAuthor } from "./middlewares/authVerifyAuthor.js";
+import passport from "passport";
+import googleStrategy from "./config/passport.config.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -20,9 +22,16 @@ cloudinary.config({
 const server = express();
 const port = process.env.PORT || 4000;
 
-server.use(cors());
+server.use(
+  cors({
+    origin: "http://localhost:5173", //permettiamo richieste solo da questo local host
+    credentials: true, //usiamo auth headers
+  })
+);
 server.use(morgan("tiny"));
 server.use(express.json());
+
+passport.use(googleStrategy);
 
 //rotte
 server.use("/auth", authRouter);

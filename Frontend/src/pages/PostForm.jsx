@@ -123,7 +123,7 @@ function PostForm({ token }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="p-5">
       <Form.Group className="mb-3">
         <Form.Label>Titolo del blog:</Form.Label>
         <Form.Control
@@ -182,7 +182,7 @@ function PostForm({ token }) {
           onChange={handleChange}
         />
       </Form.Group>
-      <Button type="submit">{isEdited ? "Aggiorna Post" : "Crea Post"}</Button>
+      <Button className="mt-3" type="submit">{isEdited ? "Aggiorna Post" : "Crea Post"}</Button>
       {message && <p>{message}</p>}
     </Form>
   );

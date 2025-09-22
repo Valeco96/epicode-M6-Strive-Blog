@@ -36,7 +36,7 @@ passport.use(googleStrategy);
 //rotte
 server.use("/auth", authRouter);
 server.use("/authors", authVerifyAuthor, authorsRouter);
-server.use("/posts", authVerifyAuthor, postsRouter);
+server.use("/posts", postsRouter);
 server.use("/posts", authVerifyAuthor, commentsRouter);
 //middleware per gestione globale degli errori
 server.use(globalErrors);

@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import SinglePost from "../components/SinglePost";
 
-function Homepage() {
+function Homepage({ token }) {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
 
@@ -14,11 +14,8 @@ function Homepage() {
 
     async function fetchPosts() {
       try {
-        const token = localStorage.getItem("token"); //recupero il token
-
-        const postsFromAPI = await getAllPosts(token); //passo il token, fa il check se il backend lo accetta oppure no
+        const postsFromAPI = await getAllPosts(); //passo il token, fa il check se il backend lo accetta oppure no
         console.log("Posts fetched from API:", postsFromAPI);
-
         if (isMounted) setPosts(postsFromAPI);
       } catch (error) {
         console.error("Errore nel fetch dei post:", error);
@@ -36,6 +33,16 @@ function Homepage() {
   return (
     <Container className="mt-4">
       {error && <p className="text-danger">{error}</p>}
+      {!token && (
+        <>
+          <h1 className="text-primary-emphasis m-5">Benvenuto su Strive Blog!</h1>
+        </>
+      )}
+      {token && (
+        <>
+          <h1>I post piú recenti:</h1>
+        </>
+      )}
       <Row className="align-items-stretch">
         {posts && posts.length === 0 && <p>Nessun post disponibile</p>}
         {posts &&

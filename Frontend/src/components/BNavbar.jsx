@@ -15,9 +15,13 @@ function BNavbar() {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar
+      className=" navbar-expand-lg rounded-3"
+      style={{ backgroundColor: "#052C65" }}
+      data-bs-theme="dark"
+    >
       <Container>
-        <Navbar.Brand to="/" as={Link}>
+        <Navbar.Brand to="/" as={Link} className="text-white mx-4">
           Strive Blog
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -34,10 +38,10 @@ function BNavbar() {
             )}
             {!token && (
               <>
-                <Nav.Link to="/Login" as={Link}>
+                <Nav.Link to="/Login" as={Link} className="text-white">
                   Login
                 </Nav.Link>
-                <Nav.Link to="/Register" as={Link}>
+                <Nav.Link to="/Register" as={Link} className="text-white">
                   Registrati
                 </Nav.Link>
               </>

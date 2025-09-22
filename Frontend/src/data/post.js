@@ -1,13 +1,8 @@
 import axios from "./axios.js";
-import api from "./axios.js";
 
-export async function getAllPosts(token) {
+export async function getAllPosts() {
   try {
-    const response = await axios.get("/posts", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get("/posts");
     return response.data;
   } catch (err) {
     console.log(err);

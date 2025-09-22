@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { register } from "../data/auth";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Image from "react-bootstrap/Image";
+import Row from "react-bootstrap/Row";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -67,13 +74,13 @@ export default function Register() {
   };
 
   return (
-    <div>
+    <div className="wrapper">
       <h2>Crea un nuovo account</h2>
       {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome:</label>
-          <input
+      <Form onSubmit={handleSubmit}>
+        <div className="mb-3 mt-5">
+          <Form.Label>Nome:</Form.Label>
+          <Form.Control
             name="nome"
             value={formData.nome}
             onChange={handleChange}
@@ -81,9 +88,9 @@ export default function Register() {
             required
           />
         </div>
-        <div>
-          <label>Cognome:</label>
-          <input
+        <div className="mb-3">
+          <Form.Label>Cognome:</Form.Label>
+          <Form.Control
             name="cognome"
             value={formData.cognome}
             onChange={handleChange}
@@ -92,9 +99,9 @@ export default function Register() {
           />
         </div>
 
-        <div>
-          <label>Data di nascita:</label>
-          <input
+        <div className="mb-3">
+          <Form.Label>Data di nascita:</Form.Label>
+          <Form.Control
             type="date"
             name="dataDiNascita"
             value={formData.dataDiNascita}
@@ -102,9 +109,9 @@ export default function Register() {
             required
           />
         </div>
-        <div>
-          <label>Email:</label>
-          <input
+        <div className="mb-3">
+          <Form.Label>Email:</Form.Label>
+          <Form.Control
             type="email"
             name="email"
             value={formData.email}
@@ -113,9 +120,9 @@ export default function Register() {
             required
           />
         </div>
-        <div>
-          <label>Password:</label>
-          <input
+        <div className="mb-3">
+          <Form.Label>Password:</Form.Label>
+          <Form.Control
             type="password"
             name="password"
             value={formData.password}
@@ -124,23 +131,31 @@ export default function Register() {
             required
           />
         </div>
-        <div>
-          <label>Avatar:</label>
-          <input type="file" accept="image/*" onChange={handleAvatarChange} />
+        <div className="mb-3">
+          <Form.Label>Avatar:</Form.Label>
+          <Form.Control
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+          />
         </div>
         {avatarFile && (
-          <div>
+          <div className="mb-5">
             <p>Anteprima Avatar:</p>
             <img
               src={avatarFile}
               alt="avatar"
               width="120"
-              style={{ borderRadius: "50%" }}
+              style={{ borderRadius: "20%", border: "1px solid #052C65" }}
             />
           </div>
         )}
-        <button type="submit">Registrati</button>
-      </form>
+        <div className="d-grid gap-2 mt-5">
+          <Button size="lg" type="submit">
+            Registrati
+          </Button>
+        </div>
+      </Form>
     </div>
   );
 }

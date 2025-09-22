@@ -35,7 +35,9 @@ function Homepage({ token }) {
       {error && <p className="text-danger">{error}</p>}
       {!token && (
         <>
-          <h1 className="text-primary-emphasis m-5 pb-2">Benvenuto su Strive Blog!</h1>
+          <h1 className="text-primary-emphasis m-5 pb-2">
+            Benvenuto su Strive Blog!
+          </h1>
         </>
       )}
       {token && (
@@ -49,6 +51,7 @@ function Homepage({ token }) {
           posts.map((post) => (
             <Col key={post._id} sm={12} md={6} lg={4} className="mb-4">
               <SinglePost
+                key={post.asin}
                 post={post}
                 canEdit={!!localStorage.getItem("token")} // modifica ed eliminazione post protetta
               />

@@ -9,13 +9,17 @@ const postScheme = new Schema(
       value: { type: Number, required: true },
       unit: { type: String, required: true },
     },
-    autore: { type: mongoose.Schema.Types.ObjectId, ref: "Author", required: true },
+    autore: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Author",
+      required: true,
+    },
     categoria: { type: String, required: true },
     cover: {
       //URL dell'immagine
       type: String,
       default:
-        "https://images.pexels.com/photos/386009/pexels-photo-386009.jpeg",
+        "https://images.pexels.com/photos/4842562/pexels-photo-4842562.jpeg",
     },
     coverPublicId: {
       //Id di Cloudinary per eventuale eliminazione

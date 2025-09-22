@@ -42,13 +42,14 @@ export default function Login() {
   };
 
   return (
-    <div id="wrapper">
-      <h2 style={{ color: "#052C65" }}>Accedi</h2>
+    <div className="wrapper">
+      <h2>Accedi</h2>
       {message && <p>{message}</p>}
       <Form onSubmit={handleSubmit}>
         <div className="my-3">
           <Form.Label className="form-label">Email:</Form.Label>
           <Form.Control
+          className="form-cell"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -58,6 +59,7 @@ export default function Login() {
         <div className="my-3">
           <Form.Label className="form-label">Password:</Form.Label>
           <Form.Control
+            className="mb-4"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -65,8 +67,11 @@ export default function Login() {
           />
         </div>
 
-        <div className="d-grid gap-2 col-8 mx-auto">
-          <button className="btn btn-outline-primary" type="submit">
+        <div className="d-grid gap-2">
+          <button
+            className="btn btn-outline-primary"
+            type="submit"
+          >
             Entra
           </button>
           <button

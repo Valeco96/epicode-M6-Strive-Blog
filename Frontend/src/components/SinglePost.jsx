@@ -39,9 +39,9 @@ function SinglePost({ post, withLinks, canEdit }) {
   return (
     <Col>
       <Card
+        className="h-100"
         style={{
-          height: "100%",
-          border: "1px solid #052C65",
+          border: "2px solid #052C65",
           borderRadius: "5px",
         }}
       >
@@ -88,7 +88,7 @@ function SinglePost({ post, withLinks, canEdit }) {
         </Card.Body>
         {!withLinks && (
           <Card.Body>
-            <Card.Link as={Link} to={`/posts/${post._id}`}>
+            <Card.Link className="btn btn-outline-primary mt-auto" as={Link} to={`/posts/${post._id}`}>
               Mostra dettagli del post
             </Card.Link>
           </Card.Body>

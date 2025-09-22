@@ -9,11 +9,12 @@ import {
 } from "../controllers/posts.js";
 import { validatePost } from "../middlewares/mwPost_post.js";
 import uploadCloudinary from "../middlewares/uploadCloudinary.js";
+import { verifyJWTMiddleware } from "../middlewares/verifyJWTMiddleware.js";
 
 const postsRouter = express.Router();
 
 postsRouter.get("/", getAllPosts);
-postsRouter.post("/", validatePost, createPost);
+postsRouter.post("/", verifyJWTMiddleware, validatePost, createPost);
 postsRouter.get("/:id", getSinglePost);
 postsRouter.put("/:id", validatePost, editPost);
 postsRouter.patch("/:id", validatePost, editPost);

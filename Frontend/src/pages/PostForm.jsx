@@ -125,7 +125,7 @@ function PostForm({ token }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="p-5">
+    <Form onSubmit={handleSubmit} className="p-5 wrapper">
       <Form.Group className="mb-3">
         <Form.Label>Titolo del blog:</Form.Label>
         <Form.Control

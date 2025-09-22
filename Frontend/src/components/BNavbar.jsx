@@ -21,7 +21,7 @@ function BNavbar() {
       data-bs-theme="dark"
     >
       <Container>
-        <Navbar.Brand to="/" as={Link} className="text-white mx-4">
+        <Navbar.Brand to="/" as={Link} className="text-white ms-3">
           Strive Blog
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -29,7 +29,6 @@ function BNavbar() {
           <Nav className="me-auto">
             {token && (
               <>
-                <Nav.Link>Profilo Autore</Nav.Link>
                 <Nav.Link to="/PostForm" as={Link}>
                   Crea Post
                 </Nav.Link>

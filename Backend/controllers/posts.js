@@ -67,18 +67,32 @@ export async function createPost(request, response) {
 export async function getSinglePost(request, response) {
   try {
     const { id } = request.params;
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return response.status(400).json({ message: "L'id non e' valido" });
+      return response.status(400).json({ message: "L'id non è valido" });
     }
-    const post = await Post.findById(id);
+
+    // Recupera il post e popola l'autore (solo nome e cognome)
+    const post = await Post.findById(id).populate("autore", "nome cognome");
+
     if (!post) {
       return response.status(404).json({ message: "Post non trovato" });
     }
-    response.status(200).json(post);
+
+    // Garantisce che autore sia sempre un oggetto anche se mancante
+    const postResponse = {
+      ...post.toObject(),
+      autore: post.autore
+        ? { nome: post.autore.nome, cognome: post.autore.cognome }
+        : { nome: "", cognome: "" },
+    };
+
+    response.status(200).json(postResponse);
   } catch (error) {
+    console.error("Errore getSinglePost:", error);
     response
       .status(500)
-      .json({ message: "Errore nella ricerca del post", error });
+      .json({ message: "Errore nella ricerca del post", error: error.message });
   }
 }
 

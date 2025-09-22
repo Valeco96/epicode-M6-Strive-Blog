@@ -17,6 +17,7 @@ export async function getSinglePost(id, token) {
       },
     });
     return response.data;
+    console.log("Response completa:", response.data);
   } catch (err) {
     console.log("Errore getSinglePost:", err);
     throw err;

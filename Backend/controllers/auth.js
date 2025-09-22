@@ -42,7 +42,7 @@ export async function signUp(request, response, next) {
     await nuovoAutore.save();
 
     //genera JWT
-    const token = await signJWT({ id: nuovoAutore._id });
+    const token = await generateJWT({ id: nuovoAutore._id });
 
     //manda la risposta
     response.status(201).json({

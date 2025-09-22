@@ -39,10 +39,12 @@ function PostForm({ token }) {
           }
 
           setFormData({
-            titolo: data.titolo,
-            categoria: data.categoria,
-            autore: data.autore,
-            descrizione: data.descrizione,
+            titolo: data.titolo || "",
+            categoria: data.categoria || "",
+            autore: data.autore
+              ? `${data.autore.nome} ${data.autore.cognome}`
+              : "",
+            descrizione: data.descrizione || "",
             readTime: data.readTime || { value: "", unit: "" },
           });
         } catch (error) {
@@ -82,11 +84,11 @@ function PostForm({ token }) {
         data = response; //assumendo che createPost ritorni response.data
         console.log("Post creato:", data);
         alert("Post pubblicato con successo!");
-         navigate("/");
+        navigate("/");
 
-         if (!token) {
+        if (!token) {
           alert("Solo gli account registrati possono pubblicare un post!");
-         }
+        }
       } else {
         const response = await editPost(id, formData, token); //restituisce direttamente response
         data = response;
@@ -182,7 +184,9 @@ function PostForm({ token }) {
           onChange={handleChange}
         />
       </Form.Group>
-      <Button className="mt-3" type="submit">{isEdited ? "Aggiorna Post" : "Crea Post"}</Button>
+      <Button className="mt-3" type="submit">
+        {isEdited ? "Aggiorna Post" : "Crea Post"}
+      </Button>
       {message && <p>{message}</p>}
     </Form>
   );

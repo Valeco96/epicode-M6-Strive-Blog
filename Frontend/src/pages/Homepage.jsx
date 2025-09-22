@@ -35,7 +35,7 @@ function Homepage({ token }) {
       {error && <p className="text-danger">{error}</p>}
       {!token && (
         <>
-          <h1 className="text-primary-emphasis m-5">Benvenuto su Strive Blog!</h1>
+          <h1 className="text-primary-emphasis m-5 pb-2">Benvenuto su Strive Blog!</h1>
         </>
       )}
       {token && (

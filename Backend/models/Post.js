@@ -9,7 +9,7 @@ const postScheme = new Schema(
       value: { type: Number, required: true },
       unit: { type: String, required: true },
     },
-    autore: { type: Schema.Types.ObjectId, ref: "Author", required: true },
+    autore: { type: mongoose.Schema.Types.ObjectId, ref: "Author", required: true },
     categoria: { type: String, required: true },
     cover: {
       //URL dell'immagine
